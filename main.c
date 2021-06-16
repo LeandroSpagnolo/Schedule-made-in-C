@@ -143,6 +143,35 @@ void buscarContactosTelefono(SNodo *lista){
 
 }
 
+void elminarContactoNombre(SNodo *lista){
+
+     char nombreBuscar[20];
+    ingresoTecladoBusquedaNombre(nombreBuscar);
+
+    int contador2 = 0;
+    for(SNodo *nodo = lista;nodo != NULL; nodo = nodo->sig){
+        if(strcmp(nombreBuscar,nodo->personas.nombre) == 0){
+            lista = lista->sig;
+            contador2++;
+            free(nodo->personas.nombre);
+            free(nodo->personas.direccion);
+            free(nodo->personas.telefono);
+            free(nodo->personas.mail);
+            free(nodo->personas.aliasTelegram);
+            free(nodo->personas.usuarioInstagram);
+            free(nodo);
+        }
+          
+    }
+       
+    
+    if(contador2 == 0)
+    printf("No se encontro ningun contacto con ese nombre\n");
+
+
+
+}
+
 void menu(){
 
     int opcion = 1;
@@ -164,6 +193,8 @@ void menu(){
         buscarContactosNombre(lista);
         if(opcion == 4)
         buscarContactosTelefono(lista);
+        if(opcion == 5)
+        elminarContactoNombre(lista);
         
         
         
@@ -175,8 +206,6 @@ void menu(){
 int main(){
 
     menu();
-
-    system("pause");
 
     return 0;
 
