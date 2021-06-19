@@ -1,3 +1,4 @@
+//Victoria Caracchi y Leandro Spagnolo 5to informatica
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -112,7 +113,7 @@ void mostrarDatos(SNodo *nodo,int contador){
     printf("Contacto Numero: %d\n",contador);
     printf("Nombre: %s\n",nodo->personas.nombre);
     printf("Direccion: %s\n",nodo->personas.direccion);                         
-    printf("Telefoino: %s\n",nodo->personas.telefono);                          
+    printf("Telefono: %s\n",nodo->personas.telefono);                          
     printf("Mail: %s\n",nodo->personas.mail);
     printf("Telegram: %s\n",nodo->personas.aliasTelegram);
     printf("Instagram: %s\n",nodo->personas.usuarioInstagram);
@@ -365,6 +366,4 @@ int main(){
     menu();
 
     return 0;
-
-
 }
