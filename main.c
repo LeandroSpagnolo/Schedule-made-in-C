@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 typedef struct {
 
@@ -159,39 +160,107 @@ void buscarContactosTelefono(SList *lista){
 
 }
 
+void liberarMemoria(SNodo *nodo){
+
+    free(nodo->personas.nombre);
+    free(nodo->personas.telefono);
+    free(nodo->personas.direccion);
+    free(nodo->personas.mail);
+    free(nodo->personas.aliasTelegram);
+    free(nodo->personas.usuarioInstagram);
+    free(nodo);
+
+}
+
+int confirmacionUsuario(){
+
+    int a;
+
+    printf("Esta seguro que desea eliminar el contacto/los contactos?\n");
+    printf("Ingrese 1 para confirmar:");
+    scanf("%d",&a);
+    printf("\n");
+    return a;
+
+
+}
+
+
 void elminarContactoNombre(SList *lista){
 
     char nombreBuscar[20];
     ingresoTecladoBusquedaNombre(nombreBuscar);
     int contador2 = 0;
-    for(SNodo *nodo = lista->ultimo;nodo != NULL; nodo = nodo->ant){
+    SNodo *nodo = lista->ultimo;
+    int confirmacion = confirmacionUsuario();
 
-        if(strcmp(nombreBuscar,nodo->personas.nombre) == 0){
-            
+    if(nodo->ant == NULL && nodo->sig == NULL && confirmacion == 1){
+        if(strcmp(nombreBuscar,nodo->personas.nombre)==0){
+            lista->primero = NULL;
+            lista->ultimo = NULL;
+            liberarMemoria(nodo);
+            nodo = NULL;
             contador2++;
+        }
 
-            
-            nodo->ant->sig=nodo->sig;
-            nodo->sig->ant=nodo->ant;
+    }
+    else{
+        
+        for(;nodo != NULL && confirmacion == 1; nodo = nodo->ant){
+            if(strcmp(nombreBuscar,nodo->personas.nombre) == 0){
 
-            free(nodo->personas.nombre);
-            free(nodo->personas.direccion);
-            free(nodo->personas.telefono);
-            free(nodo->personas.mail);
-            free(nodo->personas.aliasTelegram);
-            free(nodo->personas.usuarioInstagram);
-            free(nodo);
+                if(nodo->ant == NULL){
+                    nodo->sig->ant = NULL;
+                    lista->primero=nodo->sig;
+                    contador2++;
+                    liberarMemoria(nodo);
+ 
+                }
+        
+                if(nodo->sig != NULL && nodo->ant !=NULL ){
+                    nodo->ant->sig = nodo->sig;
+                    nodo->sig->ant = nodo->ant;
+                    contador2++;
+                    liberarMemoria(nodo);
+                   
+                  
+                }
+        
+                if(nodo->sig == NULL){
+                    nodo->ant->sig = NULL;
+                    lista->ultimo = nodo->ant;
+                    contador2++;
+                    liberarMemoria(nodo);    
+                }
+                
+            }
 
         }
-          
     }
-  
-       
+    if(contador2==0 && confirmacion == 1){
+        printf("El contacto que busca no se encuentra en la agenda");
+    }
+
+}
+
+void borrarRecursivo(SList *lista){
+
+    SNodo* nodo = lista->ultimo;
+    lista->ultimo = nodo->ant;
+    liberarMemoria(nodo);
+    if(lista->ultimo != NULL){
+        borrarRecursivo(lista);
+    }
+    else{
+        lista->primero = NULL;
+    }
+    printf("Agenda Eliminada\n");
+
+}
+void eliminarTodosContactos(SList *lista){
     
-    if(contador2 == 0)
-    printf("No se encontro ningun contacto con ese nombre\n");
-
-
+    if(confirmacionUsuario() == 1 && lista->primero != NULL && lista->ultimo != NULL)
+        borrarRecursivo(lista);
 
 }
 
@@ -221,11 +290,8 @@ void menu(){
         buscarContactosTelefono(lista);
         if(opcion == 5)
         elminarContactoNombre(lista);
-        
-        
-        
-
-
+        if(opcion == 6)
+        eliminarTodosContactos(lista);
     }
 }
 
