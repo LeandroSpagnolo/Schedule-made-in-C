@@ -113,7 +113,7 @@ void mostrarDatos(SNodo *nodo,int contador){
     printf("Contacto Numero: %d\n",contador);
     printf("Nombre: %s\n",nodo->personas.nombre);
     printf("Direccion: %s\n",nodo->personas.direccion);                         
-    printf("Telefono: %s\n",nodo->personas.telefono);                          
+    printf("Telefoino: %s\n",nodo->personas.telefono);                          
     printf("Mail: %s\n",nodo->personas.mail);
     printf("Telegram: %s\n",nodo->personas.aliasTelegram);
     printf("Instagram: %s\n",nodo->personas.usuarioInstagram);
@@ -312,8 +312,7 @@ void borrarRecursivo(SList *lista){
     else{
         lista->primero = NULL;
     }
-    printf("Agenda Eliminada\n");
-
+    
 }
 
 /*Mienstras que la confirmacion del usuario sea 1 y la lista no este vacia
@@ -321,9 +320,45 @@ llama a la funcion "borrarRecursivo"*/
 
 void eliminarTodosContactos(SList *lista){
     
-    if(confirmacionUsuario() == 1 && lista->primero != NULL && lista->ultimo != NULL)
-        borrarRecursivo(lista);                                                         
+    if(confirmacionUsuario() == 1 && lista->primero != NULL && lista->ultimo != NULL){
+        borrarRecursivo(lista);
+        printf("Agenda Eliminada\n");
+    
+    }  
+
                                                                                         
+
+}
+
+/*En el caso que el usuario quiera confirmar que quiere salir de la agenda 
+Le pide que ingrese 1      
+Lo ingresado por teclado se guarda en una variable y lo devuelve */
+
+int confirmacionparaCerrar(){
+
+    int a;
+
+    printf("Esta seguro que quiere salir de la agenda, se eliminara la misma\n");
+    printf("Ingrese 1 para confirmar:");                                           
+    scanf("%d",&a);                                                             
+    printf("\n");                                                              
+    return a;
+
+
+}
+
+/*Mienstras que la confirmacion del usuario para cerrar la agenda sea 1 y la lista no este vacia
+llama a la funcion "borrarRecursivo"*/
+
+void cerrarAgenda(SList *lista){
+    
+    if(confirmacionparaCerrar() == 1 && lista->primero != NULL && lista->ultimo != NULL){
+        borrarRecursivo(lista); 
+    
+    
+    }
+    printf("Se salio de la agenda\n");
+                                                                                         
 
 }
 
@@ -359,6 +394,8 @@ void menu(){
         if(opcion == 6)
         eliminarTodosContactos(lista);
     }
+    cerrarAgenda(lista);
+    
 }
 
 int main(){
@@ -366,4 +403,6 @@ int main(){
     menu();
 
     return 0;
+
+
 }
